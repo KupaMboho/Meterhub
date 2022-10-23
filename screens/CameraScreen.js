@@ -45,7 +45,7 @@ export const CameraScreen = () => {
       try {
         await MediaLibrary.createAssetAsync(image);
         const photoUri = await AsyncStorage.getItem("imageData");
-        console.log(photoUri);
+        //console.log(photoUri);
         alert("Picture saved");
         setImage(null);
       } catch (e) {

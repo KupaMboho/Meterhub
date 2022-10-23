@@ -78,7 +78,7 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
 
   const getProfilePicture = async () => {
     const photoUri = await AsyncStorage.getItem("imageData");
-    console.log(photoUri);
+    //console.log(photoUri);
     setPhoto(photoUri);
   };
 
@@ -141,7 +141,7 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
           initialValues={{
             username: "",
             reading_id: order.meter_id,
-            photo: photo,
+            photo: JSON.stringify(photo),
           }}
           validateOnMount={true}
           onSubmit={async (values) => {
@@ -197,22 +197,13 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
               <Text style={styles.layoutText}>Upload Meter Reading:</Text>
               <AvatarContainer>
                 <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
-                  {!photo && (
-                    <Avatar.Icon
-                      size={130}
-                      icon="camera"
-                      backgroundColor={primary}
-                      marginTop={8}
-                      marginLeft={30}
-                    />
-                  )}
-                  {photo && (
-                    <Avatar.Image
-                      size={180}
-                      source={{ uri: photo }}
-                      backgroundColor="#2182BD"
-                    />
-                  )}
+                  <Avatar.Icon
+                    size={130}
+                    icon="camera"
+                    backgroundColor={primary}
+                    marginTop={8}
+                    marginLeft={30}
+                  />
                 </TouchableOpacity>
               </AvatarContainer>
               <Text style={styles.layoutText}>Select comments:</Text>
