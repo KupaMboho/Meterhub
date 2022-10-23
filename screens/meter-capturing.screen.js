@@ -67,7 +67,7 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
   const [checked4, setChecked4] = useState(false);
 
   //Image
-  const [photo, setPhoto] = useState(null);
+  const [photo, setPhoto] = useState(""); //init as empty string
 
   //inserting into database
   const [reading_id, setReadingId] = useState("");
