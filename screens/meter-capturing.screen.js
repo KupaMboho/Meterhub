@@ -67,7 +67,7 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
   const [checked4, setChecked4] = useState(false);
 
   //Image
-  const [photo, setPhoto] = useState(null);
+  const [photo, setPhoto] = useState(""); //init as empty string
 
   //inserting into database
   const [reading_id, setReadingId] = useState("");
@@ -78,7 +78,7 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
 
   const getProfilePicture = async () => {
     const photoUri = await AsyncStorage.getItem("imageData");
-    console.log(photoUri);
+    //console.log(photoUri);
     setPhoto(photoUri);
   };
 
