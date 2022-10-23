@@ -28,9 +28,15 @@ export const CameraScreen = () => {
   const takePicture = async () => {
     if (cameraRef) {
       try {
-        const data = await cameraRef.current.takePictureAsync();
-        const baseData = Base64.encode(data.uri);
-        AsyncStorage.setItem("imageData", JSON.stringify(baseData));
+        const data = await cameraRef.current.takePictureAsync({base64: true}); //log this to see th results if doesn't work delete the object
+        //const baseData = Base64.encode(data.uri);
+        //const baseData = Base64.encode(data);
+        const baseData = Base64.encodeURI(data.uri); 
+        
+        AsyncStorage.setItem("imageData", baseData);
+        //const json = JSON.stringify(baseData)
+        //AsyncStorage.setItem("imageData", json);
+
         //console.log(data);
         //console.log(data.path);
         setImage(data.uri);
