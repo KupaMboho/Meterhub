@@ -67,40 +67,35 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
   const [checked4, setChecked4] = useState(false);
 
   //Image
-  const [photo, setPhoto] = useState(image); //init as empty string
+  //const [photo, setPhoto] = useState(image); //init as empty string
 
   //inserting into database
-  const [reading_id, setReadingId] = useState(image);
-  const [meter_id, setMeterId] = useState(order.meter_id);
+  //const [reading_id, setReadingId] = useState(image);
+  //const [meter_id, setMeterId] = useState(order.meter_id);
   const [reading, setReading] = useState("");
 
-  const [isSubmit, setIsSubmit] = useState("");
+  //const [isSubmit, setIsSubmit] = useState("");
 
-  // const getProfilePicture = () => {
-  //   setPhoto(image);
-  // };
-
-  useEffect(() => {
-    const getProfilePicture = async () => {
-      setPhoto(image);
-    };
-    getProfilePicture();
-  }, [image]);
-
-  const saveOrder = async () => {
+  const saveOrder = async () => {//"http://10.0.2.2:80/api/input.php",
+    console.log("ID: " + order.meter_id)
+    console.log("reading: " + reading)
+    console.log("pic: " + image)
     axios
       .post(
-        //"http://10.0.2.2:80/api/input.php",
         "http://meterhub.epizy.com/api/input.php",
-        JSON.stringify({
+        {
           reading: reading,
-          meter_id: meter_id,
+          meter_id: order.meter_id,
           reading_id: image,
-        })
+        }
+        // JSON.stringify({
+        //   reading: reading,
+        //   meter_id: order.meter_id,
+        //   reading_id: image,
+        // })
       )
       .then((response) => {
         console.log(response.data);
-        //setIsSubmit(false);
         Alert.alert("Great", "Reading captured", [
           { text: "OK", onPress: () => navigation.navigate("Home") },
         ]);
@@ -110,9 +105,6 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
         console.log(err);
       });
   };
-  // if (isSubmit) {
-  //   saveOrder();
-  // }
 
   const handleChange = (e) => {
     setReading(e);
@@ -143,7 +135,7 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
         <Text style={styles.layoutText}>Upload Meter Reading:</Text>
         <AvatarContainer>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Camera", { order })}
+            onPress={() => navigation.navigate("Camera", { order: order })}
           >
             <Avatar.Icon
               size={130}
