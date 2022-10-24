@@ -159,7 +159,7 @@ export const HomeScreen = ({ navigation }) => {
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate("MeterCapturing", {
-                      order: item,
+                      order: item, image:"",
                     })
                   }
                 >
