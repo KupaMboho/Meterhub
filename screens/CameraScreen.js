@@ -32,16 +32,6 @@ export const CameraScreen = ({ route }) => {
         const data = await cameraRef.current.takePictureAsync({ base64: true }); //log this to see th results if doesn't work delete the object
         const newData = await cameraRef.current.takePictureAsync(); //log this to see th results if doesn't work delete the object
         navigation.navigate("MeterCapturing", { image: data.base64, order });
-        //const baseData = Base64.encode(data.uri);
-        //const baseData = Base64.encode(data);
-        //const baseData = Base64.encodeURI(data.uri);
-
-        //AsyncStorage.setItem("imageData", data.base64);
-        //const json = JSON.stringify(baseData)
-        //AsyncStorage.setItem("imageData", json);
-
-        //console.log(data);
-        //console.log(data.path);
         setImage(newData.uri);
       } catch (e) {
         console.log(e);
