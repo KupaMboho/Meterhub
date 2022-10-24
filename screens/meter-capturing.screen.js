@@ -76,10 +76,11 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
 
   //const [isSubmit, setIsSubmit] = useState("");
 
-  const saveOrder = async () => {//"http://10.0.2.2:80/api/input.php",
-    console.log("ID: " + order.meter_id)
-    console.log("reading: " + reading)
-    console.log("pic: " + image)
+  const saveOrder = async () => {
+    //"http://10.0.2.2:80/api/input.php",
+    // console.log("ID: " + order.meter_id);
+    // console.log("reading: " + reading);
+    // console.log("pic: " + image);
     axios
       .post(
         "http://meterhub.epizy.com/api/input.php",
