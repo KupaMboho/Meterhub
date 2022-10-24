@@ -58,8 +58,9 @@ const meterReadingSchema = yup.object().shape({
 });
 
 export const MeterCapturingScreen = ({ navigation, route }) => {
-  const { order } = route.params;
+  const { order, image } = route.params;
   //const { imageData } = route.params;
+  console.log(image);
   const [checked, setChecked] = useState(false);
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
@@ -82,9 +83,9 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
     setPhoto(photoUri);
   };
 
-  useEffect(() => {
-    getProfilePicture();
-  }, []);
+  // useEffect(() => {
+  //   getProfilePicture();
+  // }, []);
 
   /* useEffect(() => {
     const authenticate = async () => {
@@ -141,7 +142,7 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
           initialValues={{
             username: "",
             reading_id: order.meter_id,
-            photo: JSON.stringify(photo),
+            photo: image,
           }}
           validateOnMount={true}
           onSubmit={async (values) => {
@@ -196,7 +197,9 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
               )}
               <Text style={styles.layoutText}>Upload Meter Reading:</Text>
               <AvatarContainer>
-                <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Camera", { order })}
+                >
                   <Avatar.Icon
                     size={130}
                     icon="camera"

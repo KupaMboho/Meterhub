@@ -8,7 +8,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import base64 from "react-native-base64";
 import { Base64 } from "js-base64";
 
-export const CameraScreen = () => {
+export const CameraScreen = ({ route }) => {
+  const { order } = route.params;
   const [hasCameraPermission, sethasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -28,18 +29,20 @@ export const CameraScreen = () => {
   const takePicture = async () => {
     if (cameraRef) {
       try {
-        const data = await cameraRef.current.takePictureAsync({base64: true}); //log this to see th results if doesn't work delete the object
+        const data = await cameraRef.current.takePictureAsync({ base64: true }); //log this to see th results if doesn't work delete the object
+        const newData = await cameraRef.current.takePictureAsync(); //log this to see th results if doesn't work delete the object
+        navigation.navigate("MeterCapturing", { image: data.base64, order });
         //const baseData = Base64.encode(data.uri);
         //const baseData = Base64.encode(data);
-        const baseData = Base64.encodeURI(data.uri); 
-        
-        AsyncStorage.setItem("imageData", baseData);
+        //const baseData = Base64.encodeURI(data.uri);
+
+        //AsyncStorage.setItem("imageData", data.base64);
         //const json = JSON.stringify(baseData)
         //AsyncStorage.setItem("imageData", json);
 
         //console.log(data);
         //console.log(data.path);
-        setImage(data.uri);
+        setImage(newData.uri);
       } catch (e) {
         console.log(e);
       }
