@@ -67,61 +67,55 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
   const [checked4, setChecked4] = useState(false);
 
   //Image
-  const [photo, setPhoto] = useState(""); //init as empty string
+  const [photo, setPhoto] = useState(image); //init as empty string
 
   //inserting into database
-  const [reading_id, setReadingId] = useState("");
-  const [meter_id, setMeterId] = useState("");
+  const [reading_id, setReadingId] = useState(image);
+  const [meter_id, setMeterId] = useState(order.meter_id);
   const [reading, setReading] = useState("");
 
   const [isSubmit, setIsSubmit] = useState("");
 
-  const getProfilePicture = () => {
-    setPhoto(image);
-  };
+  // const getProfilePicture = () => {
+  //   setPhoto(image);
+  // };
 
   useEffect(() => {
-    getProfilePicture();
-  }, []);
-
-  /* useEffect(() => {
-    const authenticate = async () => {
-      axios
-        .post(
-          "http://10.0.2.2:80/api/input.php",
-          JSON.stringify({
-            ReadingId: ReadingId,
-            MeterId: MeterId,
-            Reading: Reading,
-          })
-        )
-        .then((response) => {
-          console.log(response.data);
-          setIsSubmit(false);
-          //NAVIGATE USER BASEDON THE RESPONSE
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    const getProfilePicture = async () => {
+      setPhoto(image);
     };
-    if (isSubmit) {
-      authenticate();
-    }
-  }, [isSubmit, ReadingId, MeterId, Reading]); */
+    getProfilePicture();
+  }, [image]);
 
-  const readingIdHandler = (text) => {
-    //Validations
-    setReadingId(text);
+  const saveOrder = async () => {
+    axios
+      .post(
+        //"http://10.0.2.2:80/api/input.php",
+        "http://meterhub.epizy.com/api/input.php",
+        JSON.stringify({
+          reading: reading,
+          meter_id: meter_id,
+          reading_id: image,
+        })
+      )
+      .then((response) => {
+        console.log(response.data);
+        //setIsSubmit(false);
+        Alert.alert("Great", "Reading captured", [
+          { text: "OK", onPress: () => navigation.navigate("Home") },
+        ]);
+        //NAVIGATE USER BASED ON THE RESPONSE
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+  // if (isSubmit) {
+  //   saveOrder();
+  // }
 
-  const meterIdHandler = (text) => {
-    //Validations
-    setMeterId(text);
-  };
-
-  const readingHandler = (text) => {
-    //Validations
-    setReading(text);
+  const handleChange = (e) => {
+    setReading(e);
   };
 
   return (
@@ -135,11 +129,74 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
             <Address>{order.meter_address}</Address>
           </Info>
         </OrderCard>
-        <Formik
+        <StyledFormArea>
+          <MyTextInput
+            label="Enter Meter Reading:"
+            icon="speedometer-outline"
+            placeholder="meter reading"
+            placeholderTextColor={greyText}
+            onChangeText={(e) => handleChange(e)}
+            //onBlur={handleBlur("username")}
+            value={reading}
+          />
+        </StyledFormArea>
+        <Text style={styles.layoutText}>Upload Meter Reading:</Text>
+        <AvatarContainer>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Camera", { order })}
+          >
+            <Avatar.Icon
+              size={130}
+              icon="camera"
+              backgroundColor={primary}
+              marginTop={8}
+              marginLeft={30}
+            />
+          </TouchableOpacity>
+        </AvatarContainer>
+        <Text style={styles.layoutText}>Select comments:</Text>
+        <View style={styles.checkboxView}>
+          <CheckBox
+            title="No issues"
+            checked={checked}
+            checkedColor={"green"}
+            onPress={() => setChecked(!checked)}
+          />
+          <CheckBox
+            title="Locked gate"
+            checked={checked1}
+            checkedColor={"green"}
+            onPress={() => setChecked1(!checked1)}
+          />
+        </View>
+        <View style={styles.checkboxView2}>
+          <CheckBox
+            title="Unclear picture"
+            checked={checked2}
+            checkedColor={"green"}
+            onPress={() => setChecked2(!checked2)}
+          />
+          <CheckBox
+            title="Nobody's home"
+            checked={checked3}
+            checkedColor={"green"}
+            onPress={() => setChecked3(!checked3)}
+          />
+        </View>
+        <CheckBox
+          title="Meter not found"
+          checked={checked4}
+          checkedColor={"green"}
+          onPress={() => setChecked4(!checked4)}
+        />
+        <StyledButton2 onPress={saveOrder}>
+          <ButtonText>Done</ButtonText>
+        </StyledButton2>
+        {/* <Formik
           initialValues={{
             username: "",
             reading_id: order.meter_id,
-            photo: photo,
+            photo: AsyncStorage.getItem("test"),
           }}
           validateOnMount={true}
           onSubmit={async (values) => {
@@ -150,10 +207,7 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
                 JSON.stringify({
                   reading: values.username,
                   meter_id: values.reading_id,
-                  reading_id: values.photo,
-                  //ReadingId: values.ReadingId,
-                  //MeterId: values.MeterId,
-                  //Reading: values.username,
+                  reading_id: photo,
                 })
               )
               .then((response) => {
@@ -246,7 +300,7 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
               </StyledButton2>
             </StyledFormArea>
           )}
-        </Formik>
+        </Formik> */}
       </ScrollView>
     </SafeArea>
   );
