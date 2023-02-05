@@ -78,23 +78,36 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
 
   const saveOrder = async () => {
     //"http://10.0.2.2:80/api/input.php",
-    // console.log("ID: " + order.meter_id);
-    // console.log("reading: " + reading);
-    // console.log("pic: " + image);
-    axios
-      .post(
-        "http://meterhub.epizy.com/api/input.php",
-        {
-          reading: reading,
-          meter_id: order.meter_id,
-          reading_id: image,
-        }
-        // JSON.stringify({
-        //   reading: reading,
-        //   meter_id: order.meter_id,
-        //   reading_id: image,
-        // })
-      )
+    // console.log("ID: " + order.meter_id)
+    // console.log("reading: " + reading)
+    // console.log("pic: " + image)
+    // axios
+    //   .post(
+    //     "http://meterhub.epizy.com/api/input.php",
+    //     {
+    //       reading: reading,
+    //       meter_id: order.meter_id,
+    //       reading_id: image,
+    //     }
+    //     // JSON.stringify({
+    //     //   reading: reading,
+    //     //   meter_id: order.meter_id,
+    //     //   reading_id: image,
+    //     // })
+    //   )
+    axios({
+      method: "post",
+      url: "http://meterhub.epizy.com/api/input.php",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+      data: {
+        reading: reading,
+        meter_id: order.meter_id,
+        reading_id: JSON.stringify(image),
+      },
+    })
       .then((response) => {
         console.log(response.data);
         Alert.alert("Great", "Reading captured", [
