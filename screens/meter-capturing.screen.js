@@ -77,47 +77,42 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
   //const [isSubmit, setIsSubmit] = useState("");
 
   const saveOrder = async () => {
-    //"http://10.0.2.2:80/api/input.php",
-    // console.log("ID: " + order.meter_id)
-    // console.log("reading: " + reading)
-    // console.log("pic: " + image)
-    // axios
-    //   .post(
-    //     "http://meterhub.epizy.com/api/input.php",
-    //     {
-    //       reading: reading,
-    //       meter_id: order.meter_id,
-    //       reading_id: image,
-    //     }
-    //     // JSON.stringify({
-    //     //   reading: reading,
-    //     //   meter_id: order.meter_id,
-    //     //   reading_id: image,
-    //     // })
-    //   )
-    axios({
-      method: "post",
-      url: "http://meterhub.epizy.com/api/input.php",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-      },
-      data: {
-        reading: reading,
-        meter_id: order.meter_id,
-        reading_id: JSON.stringify(image),
-      },
-    })
-      .then((response) => {
-        console.log(response.data);
-        Alert.alert("Great", "Reading captured", [
-          { text: "OK", onPress: () => navigation.navigate("Home") },
-        ]);
-        //NAVIGATE USER BASED ON THE RESPONSE
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    console.log("ID: " + order.meter_id);
+    console.log("reading: " + reading);
+    console.log("pic: " + image);
+    if (reading.length > 0) {
+      axios
+        .post(
+          "http://meterhub.epizy.com/api/input.php",
+          {
+            reading: reading,
+            meter_id: order.meter_id,
+            reading_id: image,
+          }
+          // JSON.stringify({
+          //   reading: reading,
+          //   meter_id: order.meter_id,
+          //   reading_id: image,
+          // })
+        )
+        .then((response) => {
+          console.log(response.data);
+          Alert.alert("Great", "Reading captured", [
+            { text: "OK", onPress: () => navigation.navigate("Home") },
+          ]);
+          // Alert.alert("Great", "Reading captured", [
+          //   { text: "OK", onPress: () => navigation.navigate("Home") },
+          // ]);
+          //NAVIGATE USER BASED ON THE RESPONSE
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Alert.alert("Missing Inputs", "Please fill in all required fields.", [
+        { text: "OK" },
+      ]);
+    }
   };
 
   const handleChange = (e) => {
@@ -144,60 +139,61 @@ export const MeterCapturingScreen = ({ navigation, route }) => {
             onChangeText={(e) => handleChange(e)}
             //onBlur={handleBlur("username")}
             value={reading}
+            validationSchema={meterReadingSchema}
           />
-        </StyledFormArea>
-        <Text style={styles.layoutText}>Upload Meter Reading:</Text>
-        <AvatarContainer>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Camera", { order: order })}
-          >
-            <Avatar.Icon
-              size={130}
-              icon="camera"
-              backgroundColor={primary}
-              marginTop={8}
-              marginLeft={30}
+          <Text style={styles.layoutText}>Upload Meter Reading:</Text>
+          <AvatarContainer>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Camera", { order: order })}
+            >
+              <Avatar.Icon
+                size={130}
+                icon="camera"
+                backgroundColor={primary}
+                marginTop={8}
+                marginLeft={30}
+              />
+            </TouchableOpacity>
+          </AvatarContainer>
+          <Text style={styles.layoutText}>Select comments:</Text>
+          <View style={styles.checkboxView}>
+            <CheckBox
+              title="No issues"
+              checked={checked}
+              checkedColor={"green"}
+              onPress={() => setChecked(!checked)}
             />
-          </TouchableOpacity>
-        </AvatarContainer>
-        <Text style={styles.layoutText}>Select comments:</Text>
-        <View style={styles.checkboxView}>
+            <CheckBox
+              title="Locked gate"
+              checked={checked1}
+              checkedColor={"green"}
+              onPress={() => setChecked1(!checked1)}
+            />
+          </View>
+          <View style={styles.checkboxView2}>
+            <CheckBox
+              title="Unclear picture"
+              checked={checked2}
+              checkedColor={"green"}
+              onPress={() => setChecked2(!checked2)}
+            />
+            <CheckBox
+              title="Nobody's home"
+              checked={checked3}
+              checkedColor={"green"}
+              onPress={() => setChecked3(!checked3)}
+            />
+          </View>
           <CheckBox
-            title="No issues"
-            checked={checked}
+            title="Meter not found"
+            checked={checked4}
             checkedColor={"green"}
-            onPress={() => setChecked(!checked)}
+            onPress={() => setChecked4(!checked4)}
           />
-          <CheckBox
-            title="Locked gate"
-            checked={checked1}
-            checkedColor={"green"}
-            onPress={() => setChecked1(!checked1)}
-          />
-        </View>
-        <View style={styles.checkboxView2}>
-          <CheckBox
-            title="Unclear picture"
-            checked={checked2}
-            checkedColor={"green"}
-            onPress={() => setChecked2(!checked2)}
-          />
-          <CheckBox
-            title="Nobody's home"
-            checked={checked3}
-            checkedColor={"green"}
-            onPress={() => setChecked3(!checked3)}
-          />
-        </View>
-        <CheckBox
-          title="Meter not found"
-          checked={checked4}
-          checkedColor={"green"}
-          onPress={() => setChecked4(!checked4)}
-        />
-        <StyledButton2 onPress={saveOrder}>
-          <ButtonText>Done</ButtonText>
-        </StyledButton2>
+          <StyledButton2 onPress={saveOrder}>
+            <ButtonText>Done</ButtonText>
+          </StyledButton2>
+        </StyledFormArea>
         {/* <Formik
           initialValues={{
             username: "",

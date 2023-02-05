@@ -9,7 +9,7 @@ import base64 from "react-native-base64";
 import { Base64 } from "js-base64";
 
 //add
-import { usePictureContext } from "../src/lib/sessions.context";
+//import { usePictureContext } from "../src/lib/sessions.context";
 
 export const CameraScreen = ({ route }) => {
   const { order } = route.params;
@@ -20,7 +20,7 @@ export const CameraScreen = ({ route }) => {
   const cameraRef = useRef(null);
 
   //Add
-  const { picture, updatePicture } = usePictureContext();
+  //const { picture, updatePicture } = usePictureContext();
 
   const navigation = useNavigation();
 
@@ -35,10 +35,13 @@ export const CameraScreen = ({ route }) => {
   const takePicture = async () => {
     if (cameraRef) {
       try {
-        const data = await cameraRef.current.takePictureAsync();
-        setImage(data.uri);
-        
-        navigation.navigate("MeterCapturing", { image: data, order });
+        const data = await cameraRef.current.takePictureAsync({
+          quality: 0.5,
+          base64: true,
+        });
+        //setImage(data.uri);
+
+        navigation.navigate("MeterCapturing", { image: data.base64, order });
       } catch (e) {
         console.log(e);
       }
